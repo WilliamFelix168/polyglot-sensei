@@ -8,3 +8,22 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Caches
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json

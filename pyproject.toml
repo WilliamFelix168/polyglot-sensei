@@ -7,7 +7,10 @@ authors = [
     { name = "William Felix", email = "william.felix059@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "python-dotenv>=1.2.2",
+    "supabase>=2.31.0",
+]
 
 [project.scripts]
 mentor-bahasa-inggris-and-japan-virtual = "mentor_bahasa_inggris_and_japan_virtual:main"
