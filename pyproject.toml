@@ -1,0 +1,17 @@
+[project]
+name = "mentor-bahasa-inggris-and-japan-virtual"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "William Felix", email = "william.felix059@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+mentor-bahasa-inggris-and-japan-virtual = "mentor_bahasa_inggris_and_japan_virtual:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
