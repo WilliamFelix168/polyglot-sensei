@@ -40,3 +40,11 @@ class EvaluateSpeakingSchema(BaseModel):
         description="rentang nilai dari 1 - 10 untuk pengucapan bahasa inggris dari peserta",
     )
     summary: str = Field(..., description="gabungan antara correction dan score")
+
+
+class EvaluateSpeakingSchema(BaseModel):
+    correction:str = Field(..., description="catatan perbaikan pengucapan bahasa Inggris untuk peserta")
+
+    score:str = Field(..., description="rentang nilai dari 1-10 untuk pengucapan bahasa Inggris dari peserta")
+
+    summary:str = Field(..., description="gabungan antara correction dan score")
