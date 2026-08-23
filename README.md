@@ -1,51 +1,104 @@
-# Mentor Bahasa Inggris and Japan Virtual
+# Mentor Bahasa Inggris Virtual
 
-Virtual AI mentor project for learning English and Japanese. Built in Python with an agent-based architecture.
+AI-powered English tutor for Indonesian beginners. Classifies learning intent, generates exercises across four skills (reading, writing, speaking, listening), evaluates submissions, and produces PDF progress reports — all via Google Gemini.
 
-## Status
+## Features
 
-Early scaffold — project structure in place, implementation in progress.
+- **Exercise generation** — reading, writing, speaking, and listening tasks tailored for beginners
+- **Writing evaluation** — grammar corrections with explanations in Bahasa Indonesia
+- **Speaking evaluation** — pronunciation scoring from voice notes (OGG), with phonetic feedback
+- **Listening exercises** — multi-speaker TTS dialog (male/female voices) + comprehension questions
+- **Learning reports** — PDF summary of progress over a date range
+- **Chat persistence** — full conversation history stored in Supabase
 
 ## Tech Stack
 
-- Python >= 3.14
-- [uv](https://docs.astral.sh/uv/) for build/package management
-- Supabase (planned, for persistence)
+| Layer | Technology |
+|-------|-----------|
+| Language | Python 3.12 |
+| Package manager | [uv](https://docs.astral.sh/uv/) |
+| LLM / TTS | Google Gemini (`google-genai`) |
+| Persistence | Supabase (PostgreSQL) |
+| PDF generation | `markdown-pdf` + PyMuPDF |
+| Interface | CLI (Telegram bot planned) |
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.12+
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
+- Google Gemini API key
+- Supabase project
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd mentor_bahasa_inggris_and_japan_virtual
+uv sync
+```
+
+### Configuration
+
+Create a `.env` file in the project root:
+
+```env
+GEMINI_API_KEY=AIzaSy...
+GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL_TTS=gemini-2.5-flash-preview-tts
+SUPABASE_URL=https://<ref>.supabase.co
+SUPABASE_KEY=<anon-or-service-role-jwt>
+```
+
+### Run
+
+```bash
+uv run main.py
+```
+
+Type a message to start a session. Use `/exit` to quit.
 
 ## Project Structure
 
 ```
-main.py                        # entry point
+main.py                          # entry point
 src/
+  app_cli.py                     # CLI REPL
+  app.py                         # Telegram bot (planned)
   agents/
-    lead.py                    # lead/orchestrator agent
-    services.py                 # agent services
-    instructions/               # agent instruction sets
+    lead.py                      # orchestrator agent
+    services.py                  # sub-agent functions (exercises, evaluation, report)
+    instructions/                # system prompts (.md) — one per agent role
   core/
-    artifacts.py                # artifact handling
-    env.py                      # environment/config loading
-    format.py                   # formatting helpers
-    llm.py                       # LLM client/integration
-    prompt.py                    # prompt building
-    schemas.py                    # data schemas
-    supabase.py                   # Supabase client
+    env.py                       # env var loading; fails fast if any key is missing
+    llm.py                       # Gemini client singleton
+    supabase.py                  # Supabase client singleton
+    schemas.py                   # Pydantic schemas for structured LLM responses
+    artifacts.py                 # per-request artifact side-channel (contextvars)
+    prompts.py                   # instruction file loader (LRU-cached)
+    format.py                    # Telegram MarkdownV2 formatter
   repository/
-    chat_repository.py            # chat data access
-  docs/                            # project docs
-  app.py                            # app entry (web?)
-  app_cli.py                         # CLI entry
+    chat_repository.py           # Supabase I/O: chat_histories, chat_users tables
+  output/                        # generated files: .wav audio, .pdf reports
 ```
 
-## Getting Started
+## Architecture
 
-Requires Python 3.14+ and `uv`.
+Single-orchestrator pipeline. `LeadAgent` classifies intent via Gemini function-calling, then dispatches to the appropriate sub-agent.
 
-```bash
-uv sync
-uv run main.py
+```
+User input
+  └─► LeadAgent
+        ├─ skill_type_classification → writing / reading / speaking / listening exercise
+        ├─ evaluate_writing          → grammar corrections
+        └─ get_learning_tip          → random study tip
+
+Voice input  → evaluate_speaking → pronunciation score + feedback
+Report request → generate_report → LearningReportSchema → PDF
 ```
 
-Configure environment variables in `.env` (see `src/core/env.py` for required keys).
+All agent instructions are external Markdown files under `src/agents/instructions/`, swappable without code changes.
 
 ## Author
 

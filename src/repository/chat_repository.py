@@ -3,7 +3,7 @@ from typing import Literal
 from loguru import logger
 
 class ChatRepository:
-    def _init_(self):
+    def __init__(self):
         self.supabase = supabase.get_supabase_client()
 
     def save_message(self,user_id:int, role: Literal["user", "model"], message_text:str):

@@ -1,7 +1,7 @@
 import contextvars #keranjang
-from typing import Optional, TypeDict #mengelola struktur datanya
+from typing import Optional, TypedDict #mengelola struktur datanya
 
-class Artifact(TypeDict):
+class Artifact(TypedDict):
     path:str
     kind:str #audio / "document"
     caption:Optional[str]

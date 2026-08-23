@@ -11,7 +11,7 @@ import src.core.artifacts as artifacts
 from datetime import datetime
 from pathlib import Path
 from google.genai import types
-from markdown_pdf import MarkdownPdf, section
+from markdown_pdf import MarkdownPdf, Section
 from typing import Literal
 from loguru import logger
 

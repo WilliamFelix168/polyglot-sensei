@@ -6,13 +6,14 @@ readme = "README.md"
 authors = [
     { name = "William Felix", email = "william.felix059@gmail.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "google-genai>=2.18.1",
     "loguru>=0.7.3",
     "markdown-pdf>=1.13.2",
     "pydantic>=2.13.4",
     "python-dotenv>=1.2.2",
+    "python-telegram-bot[job-queue]>=22.8",
     "supabase>=2.31.0",
     "telegramify-markdown>=1.2.0",
 ]
