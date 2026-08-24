@@ -35,12 +35,8 @@ class LeadAgent:
         #list_comprehension
         return [
             types.Content(
-                role= row["role"],
-                parts=[
-                    types.Part(
-                        role=row["role"], parts=[types.Part(text=row["message_text"])]
-                    )
-                ]
+                role=row["role"],
+                parts=[types.Part(text=row["message_text"])]
             )
             for row in response.data
         ]
@@ -74,7 +70,7 @@ class LeadAgent:
         for item in artifacts_data:
             self.chat_repository.save_artifact(
                 user_id= user_id,
-                artifacts_path =item["path"]
+                artifact_path=item["path"]
             )
 
         self.chat_repository.save_message(
@@ -83,9 +79,7 @@ class LeadAgent:
             message_text=answer
         )
 
-        collected_artifacts = self.chat_repository.get_last_artifact_by_user_id(user_id=user_id)
-
-        return {"text":answer, "artifacts" : collected_artifacts}
+        return {"text":answer, "artifacts": artifacts_data}
 
     def handle_send_voice(self, user_id :int, voice_file_path:str):
         self.chat_repository.save_message(
